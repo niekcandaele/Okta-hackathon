@@ -1,0 +1,37 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs/blocks';
+import { styled } from 'styled';
+import { theme } from 'styled/theme';
+
+<Meta title="Colors" />
+
+# Theme
+
+<ColorPalette>
+
+  ## Main colors
+  <ColorItem title="Primary" colors={[theme.colors.primary]} />
+  <ColorItem title="Secondary" colors={[theme.colors.secondary]} />
+  <ColorItem title="Tertiary" colors={[theme.colors.tertiary]} />
+  <ColorItem title="Quaternary" colors={[theme.colors.quaternary]} />
+
+
+  ## Info messages
+  <ColorItem title="Info" colors={[theme.colors.info]} />
+  <ColorItem title="Success" colors={[theme.colors.success]} />
+  <ColorItem title="Warning" colors={[theme.colors.warning]} />
+  <ColorItem title="Error" colors={[theme.colors.error]} />
+
+  ## Other
+  <ColorItem title="Background" colors={[theme.colors.background]} />
+  <ColorItem title="Gray" colors={[theme.colors.gray]} />
+
+  ## Gradients
+  <ColorItem title="Primary" colors={[theme.gradient.primary]} />
+  <ColorItem title="Secondary" colors={[theme.gradient.secondary]} />
+  <ColorItem title="Tertiary" colors={[theme.gradient.tertiary]} />
+  <ColorItem title="Quaternary" colors={[theme.gradient.quaternary]} />
+
+  ## Text
+  <ColorItem title="Text" colors={[theme.colors.gray]} />
+
+</ColorPalette>

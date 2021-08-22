@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  redis:
+    image: 'redislabs/redismod'
+    ports:
+      - 127.0.0.1:6379:6379
+    volumes:
+      - redis:/data
+  insight:
+    image: 'redislabs/redisinsight'
+    ports:
+      - 127.0.0.1:8001:8001
+    volumes:
+      - redisinsight:/db
+  # Dev mode, no auth required
+  feature-creep-server-dev:
+    #build: ./server
+    image: ghcr.io/niekcandaele/featurecreep-server:latest
+    ports:
+      - 127.0.0.1:4000:4000
+    environment: 
+      - REDIS_HOST=redis
+      - NODE_ENV=development
+  feature-creep-client-dev:
+    image: ghcr.io/niekcandaele/featurecreep-client:dev
+    ports:
+      - 127.0.0.1:3000:5000
+volumes:
+  redisinsight:
+  redis:
