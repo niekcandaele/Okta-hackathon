@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { promisify } from 'util';
 
-import { Person } from '../rejson/entities/Person';
+import { Person } from '../orm/entity/Person';
 import { getDevJwt } from '../test/devJwt';
 import { schema } from './schema';
 
@@ -21,7 +21,7 @@ export const server = new ApolloServer({
 
     if (process.env.NODE_ENV !== 'production') {
       const decoded = getDevJwt();
-      const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
+      const user = await Person.findOrCreate(decoded.sub);
       return { user };
     }
 
@@ -39,7 +39,7 @@ export const server = new ApolloServer({
         algorithms: ['RS256'],
       });
       //console.log(decoded);
-      const user = await Person.findOrCreate(decoded.sub, { id: decoded.sub });
+      const user = await Person.findOrCreate(decoded.sub);
       return { user };
     } catch (error) {
       console.error(error);

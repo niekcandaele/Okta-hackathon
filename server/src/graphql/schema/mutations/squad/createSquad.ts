@@ -1,7 +1,7 @@
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Squad } from '../../../../rejson/entities/Squad';
+import { Squad } from '../../../../orm/entity/Squad';
 import { squadType } from '../../types/squad';
 
 export const createSquad = {
@@ -27,7 +27,7 @@ export const createSquad = {
   ) => {
     const squad = await Squad.create({
       name: args.input.name,
-    });
+    }).save();
     squad.open = true;
     await squad.addMember(context.user);
     squad.open = false;

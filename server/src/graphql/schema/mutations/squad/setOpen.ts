@@ -2,7 +2,7 @@ import { UserInputError } from 'apollo-server';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Squad } from '../../../../rejson/entities/Squad';
+import { Squad } from '../../../../orm/entity/Squad';
 import { squadType } from '../../types/squad';
 
 const setOpenStatusInput = new GraphQLInputObjectType({

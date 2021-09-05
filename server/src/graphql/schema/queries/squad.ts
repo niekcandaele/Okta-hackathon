@@ -1,15 +1,9 @@
 import { UserInputError } from 'apollo-server';
-import {
-  GraphQLEnumType,
-  GraphQLInputObjectType,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLEnumType, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../..';
-import { Person } from '../../../rejson/entities/Person';
-import { Squad } from '../../../rejson/entities/Squad';
+import { Person } from '../../../orm/entity/Person';
+import { Squad } from '../../../orm/entity/Squad';
 import { squadType } from '../types/squad';
 
 const getSquadType = new GraphQLInputObjectType({
@@ -49,12 +43,11 @@ export const squadsQuery = {
         );
         for (const squad of squadsMemberOf) {
           if (!squad) continue;
-          await squad.getActiveSession();
           res.push(squad);
         }
         break;
       case 'all':
-        const allSquads = await Squad.findAll();
+        const allSquads = await Squad.find();
         res = res.concat(allSquads);
         break;
       default:
@@ -63,7 +56,7 @@ export const squadsQuery = {
 
     const squadsWithPersons = await Promise.all(
       res.map(async (s) => {
-        const members: (Person | null)[] = await Promise.all(
+        const members: (Person | undefined)[] = await Promise.all(
           s.members.map((p) => Person.findOne(p))
         );
         return {
@@ -87,11 +80,8 @@ export const squadQuery = {
     args: any,
     context: IContext
   ) => {
-    const squad = await Squad.findOne(args.id);
+    const squad = await Squad.findOne(args.id, { relations: ['members'] });
     if (!squad) throw new UserInputError('Invalid squad ID');
-    await squad.isReady;
-    const members = await squad.getMembers();
-    await squad.getActiveSession();
-    return { ...squad, members };
+    return squad;
   },
 };

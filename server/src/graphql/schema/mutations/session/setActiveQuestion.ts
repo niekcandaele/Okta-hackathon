@@ -2,7 +2,8 @@ import { UserInputError } from 'apollo-server';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Session } from '../../../../rejson/entities/Session';
+import { Question } from '../../../../orm/entity/Question';
+import { Session } from '../../../../orm/entity/Session';
 import { sessionType } from '../../types/session';
 
 const setActiveQuestionInput = new GraphQLInputObjectType({
@@ -34,12 +35,11 @@ export const setActiveQuestionMutation = {
     if (!session) throw new UserInputError('Invalid session ID');
 
     const question = session.questions.find(
-      (_) => _.id === args.input.questionId
+      (_: Question) => _.id === args.input.questionId
     );
     if (!question) throw new UserInputError('Invalid question id');
 
     const newSession = await session.setActiveQuestion(question);
-    await newSession.isReady;
     return newSession;
   },
 };

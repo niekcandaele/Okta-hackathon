@@ -1,5 +1,7 @@
 import Redis from 'ioredis';
 
+import { initializeDatabase } from '../../orm';
+
 /**
  * Singleton that retrieves the database client
  */
@@ -20,7 +22,7 @@ export function getDb() {
 
 /**
  * Delete all keys of the current database.
- * Particularly usefull in a unit test enviroment.
+ * Particularly useful in a unit test enviroment.
  */
 export async function clearDb() {
   if (process.env.NODE_ENV === 'production') {
@@ -29,6 +31,16 @@ export async function clearDb() {
   if (client) {
     await client.flushall();
   }
+
+  const connection = await initializeDatabase();
+  const runner = connection.createQueryRunner();
+
+  await runner.query('SET FOREIGN_KEY_CHECKS = 0');
+  const p = connection.entityMetadatas.map(async e => {
+    return runner.clearTable(e.name.toLowerCase());
+  });
+  await Promise.all(p);
+  await runner.query('SET FOREIGN_KEY_CHECKS = 1');
 }
 
 function handleKernelKillSignals() {

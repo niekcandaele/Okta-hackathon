@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 
-import { Person } from '../../rejson/entities/Person';
-import { Session } from '../../rejson/entities/Session';
-import { Squad } from '../../rejson/entities/Squad';
+import { Person } from '../../orm/entity/Person';
+import { Session } from '../../orm/entity/Session';
+import { Squad } from '../../orm/entity/Squad';
 import { getDevJwt } from '../devJwt';
 import { testClient } from '../testClient.spec';
 import { createPerson } from '../util';
@@ -11,11 +11,11 @@ describe('INTEGRATION session activity', () => {
   it('Does the thing', async () => {
     const harry = await createPerson('harry');
     const ron = await createPerson('ron');
-    const user = await Person.create({ id: getDevJwt().sub });
+    const user = await Person.create({ id: getDevJwt().sub }).save();
 
     if (!user) throw new Error('user undefined');
 
-    const squad = await Squad.create({ name: 'testing Squad' });
+    const squad = await Squad.create({ name: 'testing Squad' }).save();
     await squad.setOpen();
     await squad.addMember(harry);
     await squad.addMember(ron);

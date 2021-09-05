@@ -1,13 +1,8 @@
 import { UserInputError } from 'apollo-server';
-import {
-  GraphQLInputObjectType,
-  GraphQLInt,
-  GraphQLNonNull,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLInputObjectType, GraphQLInt, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Session } from '../../../../rejson/entities/Session';
+import { Session } from '../../../../orm/entity/Session';
 import { answerType } from '../../types/session';
 
 const answerQuestionType = new GraphQLInputObjectType({

@@ -1,9 +1,4 @@
-import {
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLString,
-} from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 
 import { IContext } from '../..';
 import { getRediSearch } from '../../../redisearch/client';
@@ -33,9 +28,14 @@ export const searchQuery = {
     args: { search: string },
     context: IContext
   ) => {
+    console.log('getting client');
+
     const search = await getRediSearch();
+    console.log('got client');
 
     const res = await search.search(args.search, { onlyTitle: false });
+    console.log('searched yay');
+
     return res;
   },
 };

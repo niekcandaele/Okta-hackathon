@@ -10,7 +10,8 @@
     "prettier:write": "prettier --write .",
     "prettier:check": "prettier --check .",
     "start": "node ./build/src/index.js",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +26,10 @@
     "ioredis": "^4.26.0",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^2.0.3",
+    "mysql2": "^2.3.0",
     "redis-modules-sdk": "^0.4.7",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.37",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

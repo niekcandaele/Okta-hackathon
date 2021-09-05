@@ -1,7 +1,7 @@
 import { GraphQLInputObjectType, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Person } from '../../../../rejson/entities/Person';
+import { Person } from '../../../../orm/entity/Person';
 import { personType } from '../../types/person';
 
 const editType = new GraphQLInputObjectType({

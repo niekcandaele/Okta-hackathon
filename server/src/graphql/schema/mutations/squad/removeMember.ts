@@ -2,8 +2,8 @@ import { UserInputError } from 'apollo-server';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Person } from '../../../../rejson/entities/Person';
-import { Squad } from '../../../../rejson/entities/Squad';
+import { Person } from '../../../../orm/entity/Person';
+import { Squad } from '../../../../orm/entity/Squad';
 import { squadType } from '../../types/squad';
 
 const removeMemberType = new GraphQLInputObjectType({

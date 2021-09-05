@@ -1,7 +1,10 @@
+import 'reflect-metadata';
+
 import { config } from 'dotenv';
 
 import { GearsClient } from './gears/gears';
 import { server } from './graphql';
+import { initializeDatabase } from './orm';
 import { getRediSearch } from './redisearch/client';
 import { getDb } from './rejson/db';
 import { setUpTestData } from './test/util';
@@ -14,28 +17,15 @@ export const timeseries = new Timeseries();
 
 async function main() {
   const search = await getRediSearch();
+  const db = await initializeDatabase();
 
-  await gears.initialize();
-  await timeseries.initialize();
-
-  if (process.env.NODE_ENV !== 'production') {
-    const db = await getDb();
-
-    const hasRan = await db.get('test-data-flag');
-
-    if (hasRan) {
-      console.log(
-        'Test data already exists, delete "test-data-flag" to rerun function'
-      );
-      return;
-    }
-    await setUpTestData(50, true);
-    await db.set('test-data-flag', 'true');
-  }
+  //await gears.initialize();
+  //await timeseries.initialize();
 
   server.listen().then((data: any) => {
     console.log(`🚀  Server ready at ${data.url}`);
-  });
+  })
+  .catch(e => console.error);
 }
 
 main().catch((e) => console.error(e));

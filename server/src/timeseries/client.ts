@@ -1,8 +1,8 @@
 import hasha from 'hasha';
 import IORedis from 'ioredis';
 
+import { Session } from '../orm/entity/Session';
 import { getDb } from '../rejson/db';
-import { Session } from '../rejson/entities/Session';
 
 interface IQueryOptions {
   from?: string;
@@ -34,7 +34,7 @@ export class Timeseries {
         'TS.CREATE',
         this.getTsName(squadId, question)
       );
-    } catch (error) {
+    } catch (error: any) {
       if (error.message !== 'ERR TSDB: key already exists') throw error;
     }
   }
@@ -75,7 +75,7 @@ export class Timeseries {
         '$',
         'MKSTREAM'
       );
-    } catch (error) {
+    } catch (error: any) {
       if (error.message !== 'BUSYGROUP Consumer Group name already exists')
         throw error;
     }

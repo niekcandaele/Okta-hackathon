@@ -2,8 +2,7 @@ import { UserInputError } from 'apollo-server';
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../..';
-import { Person } from '../../../rejson/entities/Person';
-import { Session } from '../../../rejson/entities/Session';
+import { Session } from '../../../orm/entity/Session';
 import { sessionType } from '../types/session';
 
 export const sessionQuery = {
@@ -18,16 +17,6 @@ export const sessionQuery = {
   ) => {
     const session = await Session.findOne(args.id);
     if (!session) throw new UserInputError('Session not found');
-    await session.isReady;
-
-    const answers = await Promise.all(
-      session.activeQuestion.answers.map(async (a) => {
-        const person = await Person.findOne(a.personId);
-        return { ...a, person };
-      })
-    );
-
-    session.activeQuestion.answers = answers;
 
     return session;
   },

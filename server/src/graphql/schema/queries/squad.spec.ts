@@ -1,16 +1,16 @@
 import { expect } from 'chai';
 
-import { Session } from '../../../rejson/entities/Session';
-import { Squad } from '../../../rejson/entities/Squad';
+import { Session } from '../../../orm/entity/Session';
+import { Squad } from '../../../orm/entity/Squad';
 import { testClient } from '../../../test/testClient.spec';
 
 describe('Squad query', () => {
   it('Can get by ID', async () => {
-    const squad = await Squad.create({ name: 'testers' });
+    const squad = await Squad.create({ name: 'testers' }).save();
 
-    await Session.create({ squad });
-    await Session.create({ squad });
-    await Session.create({ squad });
+    await Session.create({ squad }).save();
+    await Session.create({ squad }).save();
+    await Session.create({ squad }).save();
 
     const query = `
         query {

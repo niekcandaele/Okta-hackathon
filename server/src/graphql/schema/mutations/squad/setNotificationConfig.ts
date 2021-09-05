@@ -3,7 +3,7 @@ import axios from 'axios';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Squad } from '../../../../rejson/entities/Squad';
+import { Squad } from '../../../../orm/entity/Squad';
 import { squadType } from '../../types/squad';
 
 const SetNotificationConfigInput = new GraphQLInputObjectType({
@@ -45,7 +45,7 @@ export const setNotificationConfig = {
         'Discord webhook correct form but cannot send a message'
       );
 
-    squad.notificationConfig.discordWebhook = args.input.discordWebhook;
+    squad.discordWebhook = args.input.discordWebhook;
     squad = await squad.save();
 
     return squad;

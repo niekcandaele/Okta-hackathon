@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { Squad } from '../../rejson/entities/Squad';
+import { Squad } from '../../orm/entity/Squad';
 import { testClient } from '../testClient.spec';
 
 describe('INTEGRATION squad management', () => {
@@ -89,11 +89,10 @@ describe('INTEGRATION squad management', () => {
 
     const squadWithMember = await Squad.findOne(squadId);
     if (!squadWithMember) throw new Error('no squad');
-    const withMembers = await squadWithMember.getMembers();
 
-    expect(withMembers).to.be.an('array');
-    expect(withMembers).to.have.length(1);
-    expect(withMembers[0].id).to.be.equal(personId);
+    expect(squadWithMember.members).to.be.an('array');
+    expect(squadWithMember.members).to.have.length(1);
+    expect(squadWithMember.members[0].id).to.be.equal(personId);
 
     const removeMemberMutation = `mutation test($input:RemoveMemberType){
       removeMemberFromSquad(input: $input) {
@@ -113,9 +112,8 @@ describe('INTEGRATION squad management', () => {
 
     const squadWithoutMembers = await Squad.findOne(squadId);
     if (!squadWithoutMembers) throw new Error('no squad');
-    const withoutMembers = await squadWithoutMembers.getMembers();
 
-    expect(withoutMembers).to.be.an('array');
-    expect(withoutMembers).to.have.length(0);
+    expect(squadWithoutMembers.members).to.be.an('array');
+    expect(squadWithoutMembers.members).to.have.length(0);
   });
 });

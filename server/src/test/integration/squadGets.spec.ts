@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { Squad } from '../../rejson/entities/Squad';
+import { Squad } from '../../orm/entity/Squad';
 import { testClient } from '../testClient.spec';
 
 describe('INTEGRATION squad query gets', () => {
@@ -35,7 +35,7 @@ describe('INTEGRATION squad query gets', () => {
 
     expect(squadId).to.be.a('string');
 
-    await Squad.create({ name: 'unused squad' });
+    await Squad.create({ name: 'unused squad' }).save();
 
     const getMemberOfSquadsNoMember = `query {
             squads(filter: {filter: MEMBEROF}) {
@@ -80,11 +80,10 @@ describe('INTEGRATION squad query gets', () => {
 
     const squadWithMember = await Squad.findOne(squadId);
     if (!squadWithMember) throw new Error('no squad');
-    const withMembers = await squadWithMember.getMembers();
 
-    expect(withMembers).to.be.an('array');
-    expect(withMembers).to.have.length(1);
-    expect(withMembers[0].id).to.be.equal(personId);
+    expect(squadWithMember.members).to.be.an('array');
+    expect(squadWithMember.members).to.have.length(1);
+    expect(squadWithMember.members[0].id).to.be.equal(personId);
 
     const getMemberOfSquads = `query {
             squads(filter: {filter: MEMBEROF}) {

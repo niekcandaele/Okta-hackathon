@@ -2,8 +2,8 @@ import { UserInputError } from 'apollo-server';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
-import { Session } from '../../../../rejson/entities/Session';
-import { Squad } from '../../../../rejson/entities/Squad';
+import { Session } from '../../../../orm/entity/Session';
+import { Squad } from '../../../../orm/entity/Squad';
 import { sessionType } from '../../types/session';
 
 const createSessionInput = new GraphQLInputObjectType({
@@ -29,6 +29,6 @@ export const createSession = {
   ) => {
     const squad = await Squad.findOne(args.input.squadId);
     if (!squad) throw new UserInputError('Invalid squad ID');
-    return Session.create({ squad });
+    return Session.create({ squad }).save();
   },
 };

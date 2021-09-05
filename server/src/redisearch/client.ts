@@ -164,7 +164,7 @@ export class RediSearch {
     try {
       const r = await this.db.send_command('FT.INFO', this.indexName);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       // This message means the index does not exist
       if (error.message === 'Unknown Index name') return false;
       // If we get some other error, throw it

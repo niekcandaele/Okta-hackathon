@@ -2,8 +2,8 @@ import { UserInputError } from 'apollo-server';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { IContext } from '../../..';
+import { Session } from '../../../../orm/entity/Session';
 import { IQuestion, RediSearch } from '../../../../redisearch/client';
-import { Session } from '../../../../rejson/entities/Session';
 import { questionType } from '../../types/session';
 
 const search = new RediSearch();
@@ -37,12 +37,12 @@ export const addQuestion = {
     },
     context: IContext
   ) => {
-    const session = await Session.findOne(args.input.sessionId);
-    if (!session) throw new UserInputError('Invalid session ID');
+      const session = await Session.findOne(args.input.sessionId);
+      if (!session) throw new UserInputError('Invalid session ID');
 
-    await search.init();
-    await search.addQuestion(args.input.question);
+      await search.init();
+      await search.addQuestion(args.input.question);
 
-    return session.addQuestion(args.input.question);
+      return session.addQuestion(args.input.question);
   },
 };
